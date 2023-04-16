@@ -1,0 +1,14 @@
+{
+  "name": "autobomb",
+  "version": "1.0.0",
+  "description": "Proyecto Autobomb para medir volúmenes de agua en tanques residenciales",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tu Nombre",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
