@@ -5,9 +5,9 @@ const connection = mysql.createConnection({
   host: 'autobombapp.mysql.database.azure.com',
   user: 'autobomb',
   password: '{Ricardo07=}',
-  database: '{autobombapp}',
+  database: '{agua}',
   port: 3306,
-  ssl: { ca: fs.readFileSync('{ca-cert filename}') },
+  ssl: { ca: fs.readFileSync('{certs/DigiCertGlobalRootCA.crt.pem}') },
 });
 
 connection.connect((error) => {
@@ -19,3 +19,4 @@ connection.connect((error) => {
 });
 
 module.exports = connection;
+module.exports = pool.promise();

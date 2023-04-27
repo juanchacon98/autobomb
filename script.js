@@ -1,22 +1,26 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Aquí puedes agregar eventos y funciones para interactuar con los elementos de la página
-    const measurementForm = document.getElementById('measurement-form');
-    const dataTable = document.getElementById('data-table');
-    const downloadDataButton = document.getElementById('download-data');
+document.getElementById('submit-btn').addEventListener('click', async () => {
+    const volumen = parseFloat(document.getElementById('volumen-input').value);
+    const fecha = document.getElementById('fecha-input').value;
+    const hora = document.getElementById('hora-input').value;
 
-    // Evento para manejar el envío del formulario de mediciones
-    measurementForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        // Obtener el volumen ingresado y realizar acciones, como enviarlo al Arduino o almacenarlo en la base de datos
-        const volume = document.getElementById('volume').value;
-        console.log('Volumen enviado:', volume);
-        // Limpiar el campo de volumen
-        document.getElementById('volume').value = '';
-    });
+    try {
+        const response = await fetch('/submit-data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ volumen, fecha, hora })
+        });
 
-    // Evento para manejar la descarga de datos
-    downloadDataButton.addEventListener('click', () => {
-        console.log('Descargar datos');
-        // Aquí puedes implementar la lógica para descargar los datos almacenados en la base de datos
-    });
+        const data = await response.json();
+
+        if (response.ok) {
+            alert(data.message);
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (err) {
+        console.error(err);
+        alert('Error: Unable to connect to the server.');
+    }
 });
