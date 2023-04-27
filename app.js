@@ -3,6 +3,12 @@ const app = express();
 const path = require('path');
 const db = require('./database');
 
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
