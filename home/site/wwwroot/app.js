@@ -1,29 +1,29 @@
 const express = require('express');
 const app = express();
-const path = require('path');
-const db = require('./database');
+const appInsights = require('applicationinsights');
 
-const port = process.env.PORT || 8080;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+// Replace 'your_instrumentation_key' with the actual key from your Application Insights instance
+appInsights.setup('a3dff85b-56fc-4660-9476-4d1a1fa6a7eb')
+  .setSendLiveMetrics(true)
+  .setDistributedTracingMode(appInsights.DistributedTracingModes.AI)
+  .start();
+
+const client = appInsights.defaultClient;
+
+// Other middleware and routes go here
+
+app.use((req, res, next) => {
+  // Custom telemetry: track request performance
+  const startTime = Date.now();
+  res.on('finish', () => {
+    const endTime = Date.now();
+    const duration = endTime - startTime;
+    client.trackRequest({name: req.url, resultCode: res.statusCode, success: true, url: req.url, duration, startTime});
+  });
+  next();
 });
 
-
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.post('/submit-data', async (req, res) => {
-    const { volumen, fecha, hora } = req.body;
-
-    try {
-        const [result] = await db.query('INSERT INTO sensor_data (volumen, fecha, hora) VALUES (?, ?, ?)', [volumen, fecha, hora]);
-        res.status(200).json({ message: 'Data saved successfully.' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'An error occurred while saving data.' });
-    }
-});
-
-app.listen(3000, () => {
-    console.log('Server listening on port 3000');
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
