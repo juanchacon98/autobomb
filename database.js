@@ -1,14 +1,6 @@
 const mysql = require('mysql2');
 const fs = require('fs');
 
-const mysql = require('mysql2');
-const connectionString = process.env.DB_CONNECTION_STRING;
-
-const connection = mysql.createConnection(connectionString);
-
-// Tu código para trabajar con la base de datos aquí
-
-
 const connection = mysql.createConnection({
   host: 'autobombapp.mysql.database.azure.com',
   user: 'autobomb',
@@ -26,5 +18,9 @@ connection.connect((error) => {
   console.log('Connected to the database');
 });
 
-module.exports = connection;
-module.exports = pool.promise();
+const pool = connection.promise();
+
+module.exports = {
+  connection: connection,
+  poolPromise: pool,
+};
