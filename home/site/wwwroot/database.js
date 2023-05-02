@@ -18,5 +18,9 @@ connection.connect((error) => {
   console.log('Connected to the database');
 });
 
-module.exports = connection;
-module.exports = pool.promise();
+const pool = connection.promise();
+
+module.exports = {
+  connection: connection,
+  poolPromise: pool,
+};
