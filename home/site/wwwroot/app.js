@@ -4,9 +4,9 @@ const path = require('path');
 const db = require('./database');
 
 const port = process.env.PORT || 8080;
-/*app.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-});*/
+});
 
 
 app.use(express.json());
