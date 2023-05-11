@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const appInsights = require('applicationinsights');
 
@@ -10,7 +11,8 @@ appInsights.setup('a3dff85b-56fc-4660-9476-4d1a1fa6a7eb')
 
 const client = appInsights.defaultClient;
 
-// Other middleware and routes go here
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
   // Custom telemetry: track request performance
